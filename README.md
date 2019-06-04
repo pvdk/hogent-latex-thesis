@@ -45,6 +45,7 @@ Installing the following packages on Debian/Ubuntu-based systems will cover all 
 For other Linux distros I have provided a complete list of the CTAN packages that are loaded by this template. In the second column is the Debian/Ubuntu package that contains it. Oftentimes other distros will follow the same naming scheme. If that's not the case you can search for the right package using the CTAN package name.
 <details>
 <summary>Click to expand</summary>
+
 | CTAN Package  | Debian/Ubuntu |
 | ------------- | ------------- |
 |xkeyval|texlive-latex-recommended|
@@ -172,6 +173,7 @@ For other Linux distros I have provided a complete list of the CTAN packages tha
 |gettitlestring|texlive-latex-base|
 |pdflscape|texlive-latex-base|
 |lscape|texlive-latex-base|
+
 </details>
 
 ## Installation
@@ -195,7 +197,7 @@ It is called like this:
 \javacode{sample/binaryconverter.java}
 ```
 and it looks like this:
-![Minted]([mintedshot])
+![Minted](https://raw.githubusercontent.com/pvdk/hogent-latex-thesis/master/minted.png?raw=true)
 
 ### Getting it to work
 To get syntax highlighting to work in LaTeX the Python package [Pygments][pygments] needs to be installed. In order to do this you can do a `pip install Pygments` or use your distro's package manager if you're on Linux.
@@ -203,7 +205,7 @@ To get syntax highlighting to work in LaTeX the Python package [Pygments][pygmen
 I highly recommend using the _solarized_ Pygments color scheme, at least as long as there is no color scheme using the HoGent style colors. The package and installation instructions can be found in [this repository][solarized].
 
 The compilation flag `-shell-escape` needs to be added to your LaTeX compiler. For **TeXstudio** go to _Options > Configure TeXstudio >  Commands_ and add it to the parameters for each compiler listed:
-![TeXstudio]([texstudioshot])
+![TeXstudio](https://raw.githubusercontent.com/pvdk/hogent-latex-thesis/master/texstudio.png?raw=true)
 
 ## Contributing
 Suggestions, feature requests, [issues](https://github.com/pvdk/hogent-latex-thesis/issues) and [pull requests](https://github.com/pvdk/hogent-latex-thesis/pulls) are always welcome.
@@ -236,7 +238,4 @@ A copy of the original license text for each font can be found in their respecti
 [mactex]: <https://www.tug.org/mactex/>
 [mitlicense]: <https://opensource.org/licenses/MIT/>
 [ofllicense]: <https://opensource.org/licenses/OFL-1.1/>
-
 [thesistex]: <https://github.com/pvdk/hogent-latex-thesis/tree/master/thesis.tex>
-[mintedshot]: <https://raw.githubusercontent.com/pvdk/hogent-latex-thesis/master/minted.png?raw=true>
-[texstudioshot]: <https://raw.githubusercontent.com/pvdk/hogent-latex-thesis/master/texstudio.png?raw=true>
