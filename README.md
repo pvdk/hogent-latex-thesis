@@ -197,6 +197,7 @@ It is called like this:
 \javacode{sample/binaryconverter.java}
 ```
 and it looks like this:
+
 ![Minted](https://raw.githubusercontent.com/pvdk/hogent-latex-thesis/master/minted.png?raw=true)
 
 ### Getting it to work
