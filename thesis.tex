@@ -1,0 +1,147 @@
+% TODO: Replace the option fbo with your own faculty!
+%% Valid entries are fbo, fmw, fnt and soa, see README.md for more information
+\documentclass[table,twoside,english,fbo]{hogentthesis}
+\usepackage{snapshot}
+%% epsfig is required for the sample content in sample.tex
+% TODO: Remove this if you don't need to load .eps figure.
+\usepackage{epsfig}
+\graphicspath{{sample/}{graphics/}} % TODO: Remove the sample/ directory
+
+\usepackage{makeidx}					%% For creating indexes
+\usepackage{url}						%% For email addresses, hyperlinks, etc
+\usepackage{xspace}						%% Adds spaces after a command
+\usepackage{listings}					%% For literal text and code
+\usepackage{microtype}					%% Makes text easier on the eyes
+
+%% For source code highlighting, requires pygments to be installed
+%% Compile with the -shell-escape flag!
+\usepackage[section]{minted}									
+ %% Solarized: https://github.com/shkumagai/pygments-style-solarized/
+\usemintedstyle{solarizedlight}
+\definecolor{bg}{RGB}{253,246,227} %% Set the background color of the codeframe
+%% Change this line to edit the line numbering style:
+\renewcommand{\theFancyVerbLine}{\ttfamily\scriptsize\arabic{FancyVerbLine}}
+
+%% Macro definition to load external java source files with \javacode{filename}:
+\newmintedfile[javacode]{java}{
+	bgcolor=bg,
+	fontfamily=tt,
+	linenos=true,
+	numberblanklines=true,
+	numbersep=5pt,
+	gobble=0,
+	framesep=2mm,
+	funcnamehighlighting=true,
+	tabsize=4,
+	obeytabs=false,
+	breaklines=true,
+	mathescape=false
+	samepage=false,
+	showspaces=false,
+	showtabs =false,
+	texcl=false,
+}
+
+\usepackage{csquotes}					%% For advanced inline/display quotes
+\usepackage[nottoc]{tocbibind}			%% Adds the bibliography/index to ToC
+\usepackage{eurosym}					%% For the euro symbol
+\usepackage{textcomp}              		%% Some special characters
+
+%% Settings:
+% TODO: Replace this with your own information
+\author{Ernst Aarden}	
+\supervisor{Dhr. F. Van Houte}
+\cosupervisor{Mevr. S. Beeckman}
+\title[The Internet applied to the refinement of Scheme]{Exploration of the\newline  Location-Identity Split}
+\academicyear{\advance\year by -1 \the\year -- \advance\year by 1 \the\year}
+\examperiod{1}
+\degreesought{Professional Bachelor of Applied Computer Science}
+\partialthesis{false} %% To display 'in partial fulfilment'
+%\institution{Internshipcompany BVBA.}
+
+\setlength{\parindent}{0cm}				%% Don't indent paragraph text
+\renewcommand{\baselinestretch}{1.2}	%% Increase line height
+\raggedbottom							%% Don't equalize content on pages
+
+\usepackage{pdfpages}					%% To add pages from PDF documents
+\usepackage{standalone}					%% Compile TeX/TikZ pictures standalone
+\usepackage{wrapfig}					%% For wrapping of figures
+
+%% Add global exceptions to the hyphenation here
+\hyphenation{back-slash}
+
+%% The bibliography, style and settings in hogentthesis.cls
+\addbibresource{bibliography.bib}		%% BibTeX bibliography file
+\defbibheading{bibempty}{}
+
+\usepackage{enumitem}					%% Make changes to the layout of lists
+\usepackage{tcolorbox}					%% For nice colored box layouts
+%\setlist{noitemsep}
+%\setlist[enumerate]{itemsep=1pt}
+%\setlist[itemize]{itemsep=1pt}
+%\setlist{parsep=\topskip}
+%\setlist{topsep=\topskip}
+%\setlist{partopsep=\topskip}
+
+\usepackage{tabularx}					%% Other table packages: tabu or tabulary
+\usepackage{booktabs}					%% Better tables
+\usepackage{rotating}					%% Allows... rotation
+\usepackage{makecell}					%% Useful for multi-line table content
+\captionsetup[figure]{labelformat=parens, labelsep=newline}
+
+%% Prevent empty pages for right-handed chapter starts in twoside mode
+\renewcommand{\cleardoublepage}{\clearpage} 
+
+\renewcommand{\arraystretch}{1.2}
+
+%% Fine tune appendix settings:
+%\usepackage{appendix}					
+%\renewcommand{\appendixtocname}{Bijlagen}
+%\renewcommand{\appendixpagename}{Bijlagen}
+%\makeatletter
+%\def\@chap@pppage{%
+%	\clear@ppage
+%	\thispagestyle{plain}
+%	\begin{flushright}
+%		\titlestyle
+%		\fontsize{96pt}{96pt}
+%		\selectfont\bfseries\thechapter
+%		\Huge\color{title} \appendixpagename
+%	\end{flushright}
+%}
+%\makeatother
+
+\listfiles
+
+%% Content starts here.
+\begin{document}
+    
+\frontmatter
+
+\hypersetup{pageanchor=false} %% Disable page numbering references
+\maketitle %% Generates title page content
+
+%% Render a second Dutch title page if the main language is English
+\IfLanguageName{english}{%
+	%% If necessary, information can be changed here
+	\degreesought{Professionele Bachelor toegepaste informatica}%
+	\begin{otherlanguage}{dutch}%
+	\maketitle%
+	\end{otherlanguage}%
+}{}
+\hypersetup{pageanchor=true}
+
+\tableofcontents
+\listoffigures
+
+\mainmatter
+
+% TODO: Remove the sample and add your own chapters
+\input{sample}
+
+\backmatter
+
+\setlength\bibitemsep{2pt} %% Add Some space between the bibliograpy entries
+\printbibliography[heading=bibintoc]
+
+\end{document}
