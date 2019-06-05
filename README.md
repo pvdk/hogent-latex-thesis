@@ -189,6 +189,9 @@ In the example above the faculty is set to `fbo` which is the abbreviation of th
 - `fnt` for the Faculty of Science and Technology (Faculteit Natuur en Techniek)
 - `soa` for the School of Arts, Royal Academy of Fine Arts (KASK) and the Royal Conservatory (Koninklijk Conservatorium)
 
+To disable the rendering of colors, for example when printing in back and white, add the option `print` to the class options.
+
+
 ## Code highlighting with Minted
 Realistically the only people at the HoGent that _might_ use this template are students and faculty members of the faculty of Business and Information Management. Therefore support for code highlighting is included. An example implementation for displaying external Java code is provided, see [thesis.tex][thesistex] for the macro.
 
