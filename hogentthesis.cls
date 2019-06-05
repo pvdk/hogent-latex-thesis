@@ -11,11 +11,11 @@
 %% (https://github.com/HoGentTIN/bachproef-latex-sjabloon)
 %%
 %% Best suited for compiling using XeLaTeX or LuaTeX,
-%% but there is support for native fonts, automatically when using 
-%% LaTeX/PDFLaTeX, or forced by specifying the 'native' option.
-%% 
+%% but there is support for native fonts, automatically when using
+%% LaTeX/PDFLaTeX, or forced by specifying the 'nativefonts' option.
+%%
 %% Author: Pieter van der Kloet (pvdkloet at gmail.com)
-%% 
+%%
 %% License: MIT license
 %% (See LICENSE for more information)
 %%
@@ -71,7 +71,7 @@
 %% Check the variables that need to be defined for the title page
 \newcommand{\@checkvariables}{%
 
-     \ifx\@title\@empty{%
+    \ifx\@title\@empty{%
         \ClassError{\@classname}{Author is undefined!}%
         {Use the \author command to define it}
     }\fi
@@ -171,13 +171,13 @@
     \RequirePackage{firamath-otf}
     \RequirePackage{realscripts}
     \defaultfontfeatures{Ligatures=TeX}
-\else 
+\else
     \ifluatex
         \RequirePackage[luatex]{geometry}
         \RequirePackage[luatex]{graphicx}
         \RequirePackage[luatex,plainpages=false]{hyperref}
         \RequirePackage[no-math]{fontspec}
-         
+
         \RequirePackage[mathrm=sym]{unicode-math}
         \unimathsetup{math-style=ISO, bold-style=ISO, mathrm=sym}
         \RequirePackage{lualatex-math}
@@ -246,7 +246,7 @@
 }\fi
 
 \ifcase\@faculty@nr%
-\relax %fbo	
+\relax %fbo
     \colorlet{title}{hogent-fbo}%
 \or %fmw
     \colorlet{title}{hogent-fmw}%
@@ -258,7 +258,7 @@
 
 \newcommand{\@facultyname}{%
     \ifcase\@faculty@nr%
-    \relax %fbo	
+    \relax %fbo
         \IfLanguageName{dutch}{Faculteit Bedrijf en Organisatie}%
             {Faculty of Business and Information Management}
     \or %fmw
@@ -282,18 +282,18 @@
 \if@nativefonts
     \let\titlefont\@undefined
     \let\subtitlefont\@undefined
-    
+
     \ClassInfo{\@classname}{Option 'nativefonts' set or
         not running XeLaTeX/LuaLaTeX: using native fonts}
-    
-    \RequirePackage[defaultfam,tabular,lining]{montserrat} 
+
+    \RequirePackage[defaultfam,tabular,lining]{montserrat}
     \RequirePackage{inconsolata}
     \RequirePackage{sfmath} % Fallback sans serif math font
-    
+
     \RequirePackage[T1]{fontenc}
     \renewcommand*\oldstylenums[1]{{\fontfamily{Montserrat-TOsF}\selectfont #1}}
-        
-    \def\titlefont{\fontseries{k}\selectfont} %% Set the black font family for titles
+
+    \def\titlefont{\fontseries{k}\selectfont} %% Set the black family for titles
     \def\subtitlefont{\fontseries{eb}\selectfont}
     \def\titlestyle{\titlefont\bfseries}
 \else
@@ -301,11 +301,12 @@
     %% for font availability, if not fall back to local .otf files
     \IfFontExistsTF{Montserrat}{%
         \newfontfamily\montserratblack{Montserrat}[BoldFont={Montserrat Black}]
-        \newfontfamily\montserratextrabold{Montserrat}[BoldFont={Montserrat ExtraBold}]
+        \newfontfamily\montserratextrabold{Montserrat}%
+            [BoldFont={Montserrat ExtraBold}]
 
         \def\titlefont{\montserratblack\bfseries}
         \def\subtitlefont{\montserratextrabold\bfseries}
-        
+
         \setmainfont{Montserrat}
         \setsansfont{Montserrat}
     }{%
@@ -313,31 +314,31 @@
             Path = fonts/Montserrat/,
             Extension = .otf,
             UprightFont = *-Black, %% Force black
-            BoldFont=*-Black, 
+            BoldFont=*-Black,
             ItalicFont=*-BlackItalic,
             BoldItalicFont= *-BlackItalic]
-        
+
         \newfontfamily\subtitlefont{Montserrat}[
             Path = fonts/Montserrat/,
             Extension = .otf,
             UprightFont = *-ExtraBold, %% Force extra bold
-            BoldFont=*-ExtraBold, 
+            BoldFont=*-ExtraBold,
             ItalicFont=*-ExtraBoldItalic,
             BoldItalicFont= *-ExtraBoldItalic]
-        
+
         \setmainfont{Montserrat}[
             Path = fonts/Montserrat/,
             Extension = .otf,
             UprightFont = *-Regular,
-            BoldFont=*-Bold, 
+            BoldFont=*-Bold,
             ItalicFont=*-Italic,
             BoldItalicFont= *-BoldItalic]
-        
+
         \setsansfont{Montserrat}[
             Path = fonts/Montserrat/,
             Extension = .otf,
             UprightFont = *-Regular,
-            BoldFont=*-Bold, 
+            BoldFont=*-Bold,
             ItalicFont=*-Italic,
             BoldItalicFont= *-BoldItalic]
     }
@@ -351,11 +352,11 @@
                 Path = fonts/Inconsolata/,
                 Extension = .otf,
                 UprightFont = *-Regular,
-                BoldFont=*-Bold, 
+                BoldFont=*-Bold,
                 ItalicFeatures = FakeSlant,
                 BoldItalicFeatures = FakeSlant]
     }
-    
+
     %% Use a unicode-compliant sans serif math font
     \IfFontExistsTF{Fira Math Regular}{%
         \setmathfont{Fira Math Regular}[FakeBold,FakeSlant]
@@ -364,12 +365,12 @@
             Path = fonts/FiraMath/,
             Extension = .otf,
             UprightFont = *-Regular,
-            BoldFont=*-Bold, 
+            BoldFont=*-Bold,
             ItalicFeatures = FakeSlant,
             BoldItalicFeatures = {FakeBold,FakeSlant}]
             %% Note: FakeBold only works in XeLaTeX
     }
-    
+
     \def\titlestyle{\titlefont\bfseries}
 
 \fi
@@ -405,20 +406,20 @@
         \endgroup
         \bigskip
         \bigskip
-        
+
         \begingroup
             \titlefont\bfseries
             \IfLanguageName{dutch}{door}{by}
         \endgroup
-        
+
         \bigskip
         \bigskip
-        
+
         \begingroup
             %% Print the name of the author
             \titlefont\Large\bfseries\@author
         \endgroup
-        
+
         \vfill
         \begingroup
         \IfLanguageName{dutch}{%
@@ -431,14 +432,16 @@
         \endgroup
     \end{center}
     \bigskip
-    \bigskip		
+    \bigskip
 
     \begingroup
     \begin{tabular}{ll}
-        \IfLanguageName{dutch}{\textbf{Promotor:}}{\textbf{Supervisor:}} & \@supervisor\\
+        \IfLanguageName{dutch}{%
+            \textbf{Promotor:}}{\textbf{Supervisor:}} & \@supervisor\\
         \ifx\@cosupervisor\@empty\else
             \IfLanguageName{dutch}{%
-                \textbf{Co-promotor:}}{\textbf{Co-Supervisor:}} & \@cosupervisor\\
+                \textbf{Co-promotor:}}{%
+                \textbf{Co-Supervisor:}} & \@cosupervisor\\
         \fi
         \ifx\@institution\@empty\else
             \IfLanguageName{dutch}{%
@@ -446,10 +449,10 @@
         \fi
     \end{tabular}
     \endgroup
-    
+
     \bigskip
     \bigskip
-    
+
     \begin{center}
         \begingroup
         \IfLanguageName{dutch}{Academiejaar: }{Academic year: }\@academicyear\\
@@ -515,7 +518,8 @@
 
 %% Change the style of paragraphs, normally text comes directly after the
 %% paragraph title
-\titleformat{\paragraph}[hang]{\normalfont\normalsize\bfseries}{\theparagraph}{0pt}{}
+\titleformat{\paragraph}[hang]{\normalfont\normalsize\bfseries}{\theparagraph}
+{0pt}{}
 \titlespacing\paragraph{0pt}{\baselineskip}{0pt}
 
 %% Draw the line above a footnote in the title color as well
@@ -536,7 +540,8 @@
 \titlespacing{\part}{0pt}{0pt}{2\baselineskip}
 %% In the table of contents, the part name is preceded by an empty line, printed
 %% in bold, and not followed by a line of dots
-\dottedcontents{part}[0em]{\vspace{\baselineskip}\subtitlefont\bfseries}{1.5em}{0pc}
+\dottedcontents{part}[0em]{%
+    \vspace{\baselineskip}\subtitlefont\bfseries}{1.5em}{0pc}
 
 %% Chapter titles have the same layout as parts
 \titleformat{\chapter}[display]
@@ -547,7 +552,8 @@
 \titlespacing{\chapter}{0pt}{0pt}{2\baselineskip}
 %% In the table of contents, a chapter is similar to a part, except that it is
 %% preceded by half an empty line
-\dottedcontents{chapter}[1.5em]{\vspace{0.5\baselineskip}\subtitlefont\bfseries}{1.5em}{0pc}
+\dottedcontents{chapter}[1.5em]{%
+    \vspace{0.5\baselineskip}\subtitlefont\bfseries}{1.5em}{0pc}
 
 %% Section titles start with the number in bold, followed by the name printed
 %% in the title color
@@ -569,7 +575,6 @@
     {\bfseries\thesubsection.\ }
     {0pt}
     {\color{title}}
-%\titlespacing{\subsection}{0pt}{\baselineskip}{0pt}
 \titlespacing{\subsection}{0pt}{\baselineskip}{1.5pt}
 \dottedcontents{subsection}[7em]{\subtitlefont}{3.2em}{8pt}
 
