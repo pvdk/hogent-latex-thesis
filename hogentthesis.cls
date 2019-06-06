@@ -167,8 +167,7 @@
     \RequirePackage[xetex,plainpages=false]{hyperref}
     \RequirePackage[no-math]{fontspec}
     \RequirePackage[mathrm=sym]{unicode-math}
-    \unimathsetup{math-style=ISO, bold-style=ISO, mathrm=sym}
-    \RequirePackage{firamath-otf}
+    \unimathsetup{math-style=ISO, bold-style=ISO, sans-style=upright, mathrm=sym}
     \RequirePackage{realscripts}
     \defaultfontfeatures{Ligatures=TeX}
 \else
@@ -179,9 +178,8 @@
         \RequirePackage[no-math]{fontspec}
 
         \RequirePackage[mathrm=sym]{unicode-math}
-        \unimathsetup{math-style=ISO, bold-style=ISO, mathrm=sym}
+        \unimathsetup{math-style=ISO, bold-style=ISO, sans-style=upright, mathrm=sym}
         \RequirePackage{lualatex-math}
-        \RequirePackage[fakebold]{firamath-otf}
         \RequirePackage{realscripts}
     \else
         \@nativefontstrue %% Force native font rendering
@@ -357,18 +355,18 @@
                 BoldItalicFeatures = FakeSlant]
     }
 
-    %% Use a unicode-compliant sans serif math font
+    % Use a unicode-compliant sans serif math font
     \IfFontExistsTF{Fira Math Regular}{%
-        \setmathfont{Fira Math Regular}[FakeBold,FakeSlant]
+        \setmathfont{Fira Math Regular}[BoldFont=Fira Math Bold]
+        \setmathfont{Fira Math Regular}[FakeSlant, range={bfit->it}]
     }{%
-        \setmathfont{FiraMath}[
+        \setmathfont{FiraMath-Regular.otf}[
             Path = fonts/FiraMath/,
-            Extension = .otf,
-            UprightFont = *-Regular,
-            BoldFont=*-Bold,
-            ItalicFeatures = FakeSlant,
-            BoldItalicFeatures = {FakeBold,FakeSlant}]
-            %% Note: FakeBold only works in XeLaTeX
+            BoldFont=FiraMath-Bold.otf]
+        \setmathfont{FiraMath-Regular.otf}[
+            Path = fonts/FiraMath/,
+            FakeSlant,
+            range={bfit->it}]
     }
 
     \def\titlestyle{\titlefont\bfseries}
