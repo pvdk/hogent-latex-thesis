@@ -27,6 +27,7 @@
 \RequirePackage{xkeyval}
 \RequirePackage{iflang}
 
+\RequirePackage[hyphens]{url}
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
 
@@ -99,7 +100,7 @@
 
     %% Since the input is there, set the PDF info
     \hypersetup{%
-        pdftitle=\@title
+        pdftitle=\@title,
         pdfauthor=\@author
     }
 }
@@ -151,11 +152,11 @@
 \else
     %% We need Dutch for English theses, e.g. on the translated title page
     \RequirePackage[main=english,dutch]{babel}
-    \RequirePackage[backend=biber, style=apa]{biblatex}
+    \RequirePackage[backend=biber,style=apa]{biblatex}
     \DeclareLanguageMapping{english}{british-apa}
 \fi
 
-\RequirePackage[small,bf,nooneline,footnotesize]{caption}
+%\RequirePackage[small,bf,nooneline,footnotesize]{caption}
 \RequirePackage[flushmargin,hang]{footmisc}
 \RequirePackage{ifpdf}
 \RequirePackage{ifxetex}
@@ -164,10 +165,10 @@
 \ifxetex
     \RequirePackage[xetex]{geometry}
     \RequirePackage[xetex]{graphicx}
-    \RequirePackage[xetex,plainpages=false]{hyperref}
+    \RequirePackage[xetex,plainpages=false,breaklinks]{hyperref}
     \RequirePackage[no-math]{fontspec}
     \RequirePackage[mathrm=sym]{unicode-math}
-    \unimathsetup{math-style=ISO, bold-style=ISO, sans-style=upright, mathrm=sym}
+    \unimathsetup{math-style=ISO,bold-style=ISO,sans-style=upright,mathrm=sym}
     \RequirePackage{realscripts}
     \defaultfontfeatures{Ligatures=TeX}
 \else
@@ -178,7 +179,8 @@
         \RequirePackage[no-math]{fontspec}
 
         \RequirePackage[mathrm=sym]{unicode-math}
-        \unimathsetup{math-style=ISO, bold-style=ISO, sans-style=upright, mathrm=sym}
+        \unimathsetup{math-style=ISO,bold-style=ISO,sans-style=upright,
+        mathrm=sym}
         \RequirePackage{lualatex-math}
         \RequirePackage{realscripts}
     \else
@@ -186,11 +188,11 @@
         \ifpdf
             \RequirePackage[pdftex]{geometry}
             \RequirePackage[pdftex]{graphicx}
-            \RequirePackage[pdftex,plainpages=false]{hyperref}
+            \RequirePackage[pdftex,plainpages=false,breaklinks]{hyperref}
         \else
             \RequirePackage[dvips]{geometry}
             \RequirePackage[dvips]{graphicx}
-            \RequirePackage[hypertex,plainpages=false]{hyperref}
+            \RequirePackage[hypertex,plainpages=false,breaklinks]{hyperref}
         \fi
     \fi
 \fi
