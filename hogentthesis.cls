@@ -202,6 +202,8 @@
 \fi
 
 \RequirePackage{tikz}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{positioning}
 \RequirePackage[noindentafter]{titlesec}
 \RequirePackage{titletoc}
 \RequirePackage[nottoc]{tocbibind}
@@ -258,7 +260,7 @@
     \ifcase\@faculty@nr%
     \relax %fbo
         \IfLanguageName{dutch}{Faculteit Bedrijf en Organisatie}%
-            {Faculty of Business and Information Management}
+            {Faculty of Business and Information Management}%
     \or %fmw
         \IfLanguageName{dutch}{Faculteit Mens en Welzijn}%
             {Faculty of Education, Health and Social Work}
@@ -275,6 +277,8 @@
     \colorlet{title}{black}
     \colorlet{links}{black}
 \fi
+
+
 
 %% Font setup
 \if@nativefonts
@@ -373,6 +377,10 @@
 
 \fi
 
+%% Use the length of the 'HO' part of the logo to set the padding of the logo
+\newsavebox{\logopart}
+\savebox{\logopart}{\includegraphics[height=2cm]{graphics/logopart}}
+
 %% We use A4 paper with slightly smaller margins than the default (scale = 0.7)
 \geometry{a4paper,hscale=0.75,vscale=0.8,headheight=14pt,asymmetric}
 
@@ -382,43 +390,30 @@
     \@checkvariables
 
     %% Change the geometry so the notes section doesn't bother us
-    \newgeometry{top=2cm,bottom=1.5cm,left=1.5cm,right=1.5cm}
-    \begin{center}
+    \newgeometry{top=2cm,bottom=\wd\logopart,left=1.5cm,right=1.5cm}
+
         %% Add whitespace at the top
         \addvspace{10\bigskipamount}
-        \begingroup
-            \includegraphics[height=3cm]{hogent_logo}\\
-            \bfseries \@facultyname\\
-        \endgroup
 
-        \bigskip
-        \bigskip
         \begingroup
             %% Print the title in the faculty color
-            \titlefont\color{title}\Huge\@title\\
+            \titlefont\color{title}\Huge\@title\@addpunct{.}\\
             %% Optionally print a subtitle
             \ifx\@subtitle\@empty\else
                 \bigskip
-                \subtitlefont\LARGE\@subtitle
+                \subtitlefont\LARGE\@subtitle\@addpunct{.}
             \fi
+            \hrule
         \endgroup
         \bigskip
-        \bigskip
-
-        \begingroup
-            \titlefont\bfseries
-            \IfLanguageName{dutch}{door}{by}
-        \endgroup
-
-        \bigskip
-        \bigskip
-
         \begingroup
             %% Print the name of the author
-            \titlefont\Large\bfseries\@author
+            \subtitlefont\Large\bfseries \@author\@addpunct{.}
         \endgroup
 
+
         \vfill
+
         \begingroup
         \IfLanguageName{dutch}{%
             Scriptie voorgedragen tot het bekomen van de graad van\\
@@ -428,45 +423,61 @@
             fulfilment of the requirements for the degree of\\ \@degreesought\\
         }
         \endgroup
-    \end{center}
+
     \bigskip
     \bigskip
+
+
 
     \begingroup
     \begin{tabular}{ll}
         \IfLanguageName{dutch}{%
             \textbf{Promotor:}}{\textbf{Supervisor:}} & \@supervisor\\
         \ifx\@cosupervisor\@empty\else
-            \IfLanguageName{dutch}{%
-                \textbf{Co-promotor:}}{%
-                \textbf{Co-Supervisor:}} & \@cosupervisor\\
+        \IfLanguageName{dutch}{%
+            \textbf{Co-promotor:}}{%
+            \textbf{Co-Supervisor:}} & \@cosupervisor\\
         \fi
         \ifx\@institution\@empty\else
-            \IfLanguageName{dutch}{%
-                \textbf{Instelling:}}{\textbf{Institution:}} & \@institution\\
+        \IfLanguageName{dutch}{%
+            \textbf{Instelling:}}{\textbf{Institution:}} & \@institution\\
         \fi
+    \end{tabular}
+
+    \bigskip
+
+
+    \begin{tabular}{ll}
+        \IfLanguageName{dutch}{%
+            \textbf{Academiejaar:}}{\textbf{Academic year:}} & \@academicyear\\
+        \textbf{%
+        \ifcase\@examperiod
+        \or
+        \IfLanguageName{dutch}{Eerste}{First}
+        \or
+        \IfLanguageName{dutch}{Tweede}{Second}
+        \else
+        \IfLanguageName{dutch}{Derde}{Third}
+        \fi
+        \IfLanguageName{dutch}{examenperiode}{exam period} } & \\
+
     \end{tabular}
     \endgroup
 
-    \bigskip
-    \bigskip
 
-    \begin{center}
-        \begingroup
-        \IfLanguageName{dutch}{Academiejaar: }{Academic year: }\@academicyear\\
-            \ifcase\@examperiod
-            \or
-                \IfLanguageName{dutch}{Eerste}{First}
-            \or
-                \IfLanguageName{dutch}{Tweede}{Second}
-            \else
-                \IfLanguageName{dutch}{Derde}{Third}
-            \fi
-        \IfLanguageName{dutch}{examenperiode}{exam period}\\
-        \endgroup
-    \end{center}
+     %% Insert the HoGent logo
+    \begin{tikzpicture}[remember picture, overlay]
+        \node [anchor=south east, shift={(-\the\wd\logopart, \the\wd\logopart)}, inner sep=0, outer sep=0] (logo) at (current page.south east)%
+        {%
+            \includegraphics[height=\the\ht\logopart]{hogent_logo}%
+        };%
+    \end{tikzpicture}
+
     \bigskip
-    \bigskip
+    \begingroup
+        \subtitlefont\bfseries\@facultyname\@addpunct{.}
+    \endgroup
+
     \end{titlepage}%
 
     \thispagestyle{empty}
