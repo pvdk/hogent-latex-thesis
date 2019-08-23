@@ -1,3 +1,6 @@
+## Non-tracking work directory
+/nontracking/*
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
