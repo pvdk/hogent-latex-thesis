@@ -59,9 +59,6 @@
 \partialthesis{false} %% To display 'in partial fulfilment'
 %\institution{Internshipcompany BVBA.}
 
-\setlength{\parindent}{0cm}              %% Don't indent paragraph text
-\renewcommand{\baselinestretch}{1.2}     %% Increase line height
-\raggedbottom                            %% Don't equalize content on pages
 
 \usepackage{pdfpages}                    %% To add pages from PDF documents
 \usepackage{standalone}                  %% Compile TeX/TikZ pictures standalone
@@ -94,23 +91,6 @@
 \renewcommand{\cleardoublepage}{\clearpage}
 
 \renewcommand{\arraystretch}{1.2}
-
-%% Fine tune appendix settings:
-%\usepackage{appendix}
-%\renewcommand{\appendixtocname}{Bijlagen}
-%\renewcommand{\appendixpagename}{Bijlagen}
-%\makeatletter
-%\def\@chap@pppage{%
-%    \clear@ppage
-%    \thispagestyle{plain}
-%    \begin{flushright}
-%        \titlestyle
-%        \fontsize{96pt}{96pt}
-%        \selectfont\bfseries\thechapter
-%        \Huge\color{title} \appendixpagename
-%    \end{flushright}
-%}
-%\makeatother
 
 %% Content starts here.
 \begin{document}
