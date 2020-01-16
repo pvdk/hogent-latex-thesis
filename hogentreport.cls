@@ -1,6 +1,6 @@
-%% University College Ghent (HoGent) thesis class
+%% University College Ghent (HOGENT) report/thesis class
 %%
-%% hogentthesis.cls
+%% hogentreport.cls
 %%
 %% Based on the TU Delft LaTeX template for reports and theses.
 %% (https://www.tudelft.nl/en/tu-delft-corporate-design/downloads/)
@@ -21,8 +21,8 @@
 %%
 
 \NeedsTeXFormat{LaTeX2e}
-\def\@classname{hogentthesis}
-\ProvidesClass{hogentthesis}[2019/05/19 v1.0 Hogeschool Gent thesis class]
+\def\@classname{hogentreport}
+\ProvidesClass{hogentreport}[2020/01/16 Hogeschool Gent report/thesis class]
 
 \RequirePackage{xkeyval}
 \RequirePackage{iflang}
@@ -51,13 +51,13 @@
 \newcommand{\examperiod}[1]{\def\@examperiod{#1}}
 \newcommand{\degreesought}[1]{\def\@degreesought{#1}}
 
-\define@choicekey*+{hogentthesis}{faculty}[\@faculty\@faculty@nr]
+\define@choicekey*+{hogentreport}{faculty}[\@faculty\@faculty@nr]
 {fbo,fmw,fnt,soa}{}{%
     \ClassError{\@classname}{The faculty parameter is undefined}
     {One of the following options for the faculty must be added to the class%
         options: fbo, fmw, fnt or soa}}
 
-\def\@DeclareFaculty#1{\DeclareOptionX{#1}{\setkeys{hogentthesis}{faculty=#1}}}
+\def\@DeclareFaculty#1{\DeclareOptionX{#1}{\setkeys{hogentreport}{faculty=#1}}}
 \@DeclareFaculty{fbo}
 \@DeclareFaculty{fmw}
 \@DeclareFaculty{fnt}
@@ -69,6 +69,14 @@
     \def\@subtitle{#1}%
 }
 
+%% Thesis or report?
+\newif\if@thesis
+\newif\if@report
+\DeclareOptionX{thesis}{\@thesistrue\@reportfalse}
+\DeclareOptionX{report}{\@thesisfalse\@reporttrue}
+\ExecuteOptionsX{report} %% Default document type
+
+
 %% Check the variables that need to be defined for the title page
 \newcommand{\@checkvariables}{%
 
@@ -78,26 +86,30 @@
     }\fi
 
     \ifx\@title\@empty{%
-        \ClassError{\@classname}{Thesis title is undefined!}%
+        \ClassError{\@classname}{Title is undefined!}%
             {Use the \title command to define it}
     }\fi
-    \ifx\@supervisor\@empty{%
-        \ClassError{\@classname}{Student supervisor is undefined!}%
-            {Use the \supervisor command to define it}
-    }\fi
     \ifx\@academicyear\@empty{%
-        \ClassError{\@classname}{Academic year is undefined!}%
-            {Use the \academicyear command to define it}
-    }\fi
-    \ifx\@examperiod\@empty{%
-        \ClassError{\@classname}{Exam period is undefined!}%
-            {Use the \examperiod command to define it}
-    }\fi
-    \ifx\@degreesought\@empty{%
-        \ClassError{\@classname}{Degree sought is undefined!}%
-            {Use the \degreesought command to define it}
-    }\fi
-
+      \ClassError{\@classname}{Academic year is undefined!}%
+      {Use the \academicyear command to define it}
+    }\fi  
+  
+    %% The following variables only need to be defined for a thesis
+    \if@thesis
+      \ifx\@supervisor\@empty{%
+          \ClassError{\@classname}{Student supervisor is undefined!}%
+              {Use the \supervisor command to define it}
+      }\fi
+      \ifx\@examperiod\@empty{%
+          \ClassError{\@classname}{Exam period is undefined!}%
+              {Use the \examperiod command to define it}
+      }\fi
+      \ifx\@degreesought\@empty{%
+          \ClassError{\@classname}{Degree sought is undefined!}%
+              {Use the \degreesought command to define it}
+      }\fi
+    \fi
+  
     %% Since the input is there, set the PDF info
     \hypersetup{%
         pdftitle=\@title,
@@ -112,8 +124,8 @@
 \ExecuteOptionsX{english} %% Default language
 
 \newif\if@partial
-\define@boolkey+{hogentthesis}{partial}[false]{%
-    \ifKV@hogentthesis@partial
+\define@boolkey+{hogentreport}{partial}[false]{%
+    \ifKV@hogentreport@partial
         \@partialtrue
     \else
         \@partialfalse
@@ -210,6 +222,7 @@
 \RequirePackage{titletoc}
 \RequirePackage[nottoc]{tocbibind}
 \RequirePackage{fancyhdr}
+\RequirePackage{appendix}
 
 %% Define the HoGent style colors
 %% Faculties:
@@ -280,12 +293,11 @@
     \colorlet{links}{black}
 \fi
 
-
-
 %% Font setup
 \if@nativefonts
     \let\titlefont\@undefined
     \let\subtitlefont\@undefined
+    \let\tocfont\@undefined
 
     \ClassInfo{\@classname}{Option 'nativefonts' set or
         not running XeLaTeX/LuaLaTeX: using native fonts}
@@ -299,6 +311,7 @@
 
     \def\titlefont{\fontseries{k}\selectfont} %% Set the black family for titles
     \def\subtitlefont{\fontseries{eb}\selectfont}
+    \def\tocfont{\fontseries{m}\selectfont}
     \def\titlestyle{\titlefont\bfseries}
 \else
     %% Using fontspec for font rendering, first check system paths
@@ -310,6 +323,7 @@
 
         \def\titlefont{\montserratblack\bfseries}
         \def\subtitlefont{\montserratextrabold\bfseries}
+        \def\tocfont{\montserratblack}
 
         \setmainfont{Montserrat}
         \setsansfont{Montserrat}
@@ -329,6 +343,14 @@
             BoldFont=*-ExtraBold,
             ItalicFont=*-ExtraBoldItalic,
             BoldItalicFont= *-ExtraBoldItalic]
+
+        \newfontfamily\tocfont{Montserrat}[
+            Path = fonts/Montserrat/,
+            Extension = .otf,
+            UprightFont = *-Regular,
+            BoldFont=*-Bold,
+            ItalicFont=*-Italic,
+            BoldItalicFont= *-BoldItalic]
 
         \setmainfont{Montserrat}[
             Path = fonts/Montserrat/,
@@ -386,105 +408,114 @@
 %% We use A4 paper with slightly smaller margins than the default (scale = 0.7)
 \geometry{a4paper,hscale=0.75,vscale=0.8,headheight=14pt,asymmetric}
 
+%% Page layout settings
+\setlength{\parindent}{0cm}              %% Don't indent paragraph text
+\renewcommand{\baselinestretch}{1.2}     %% Increase line height
+\raggedbottom                            %% Don't equalize content on pages
+
+
 %% Redefine maketitle for our custom title page
 \if@titlepage%
-    \renewcommand{\maketitle}{\thispagestyle{empty}\begin{titlepage}%
+  \renewcommand{\maketitle}{\thispagestyle{empty}\begin{titlepage}%
     \@checkvariables
-
+    
     %% Change the geometry so the notes section doesn't bother us
     \newgeometry{top=2cm,bottom=\wd\logopart,left=1.5cm,right=1.5cm}
-
-        %% Add whitespace at the top
-        \addvspace{10\bigskipamount}
-
-        \begingroup
-            %% Print the title in the faculty color
-            \titlefont\color{title}\Huge\@title\@addpunct{.}\\
-            %% Optionally print a subtitle
-            \ifx\@subtitle\@empty\else
-                \bigskip
-                \subtitlefont\LARGE\@subtitle\@addpunct{.}
-            \fi
-            \hrule
-        \endgroup
+    
+    %% Add whitespace at the top
+    %\addvspace{10\bigskipamount}
+    
+    \begingroup
+      %% Print the title in the faculty color
+      \titlefont\color{title}\Huge\@title\@addpunct{.}\\
+      %% Optionally print a subtitle
+      \ifx\@subtitle\@empty\else
         \bigskip
-        \begingroup
-            %% Print the name of the author
-            \subtitlefont\Large\bfseries \@author\@addpunct{.}
-        \endgroup
-
-
-        \vfill
-
-        \begingroup
+        \subtitlefont\LARGE\@subtitle\@addpunct{.}
+      \fi
+      \hrule
+    \endgroup
+    \bigskip
+    \begingroup
+      %% Print the name of the author
+      \subtitlefont\Large\bfseries \@author\@addpunct{.}
+    \endgroup
+    
+    \vfill
+    
+    \if@thesis
+      \begingroup
         \IfLanguageName{dutch}{%
-            Scriptie voorgedragen tot het bekomen van de graad van\\
-            \@degreesought\\
+          Scriptie voorgedragen tot het bekomen van de graad van\\
+          \@degreesought\\
         }{%
-            Thesis submitted in \if@partial{partial }\fi
-            fulfilment of the requirements for the degree of\\ \@degreesought\\
+          Thesis submitted in \if@partial{partial }\fi
+          fulfilment of the requirements for the degree of\\ \@degreesought\\
         }
-        \endgroup
-
+      \endgroup
+    \fi
+    
     \bigskip
     \bigskip
-
-
-
-    \begingroup
-    \begin{tabular}{ll}
-        \IfLanguageName{dutch}{%
+    
+    \if@thesis
+      \begingroup
+        \begin{tabular}{ll}
+          \IfLanguageName{dutch}{%
             \textbf{Promotor:}}{\textbf{Supervisor:}} & \@supervisor\\
-        \ifx\@cosupervisor\@empty\else
-        \IfLanguageName{dutch}{%
-            \textbf{Co-promotor:}}{%
-            \textbf{Co-Supervisor:}} & \@cosupervisor\\
-        \fi
-        \ifx\@institution\@empty\else
-        \IfLanguageName{dutch}{%
-            \textbf{Instelling:}}{\textbf{Institution:}} & \@institution\\
-        \fi
-    \end{tabular}
-
-    \bigskip
-
-
-    \begin{tabular}{ll}
-        \IfLanguageName{dutch}{%
+          \ifx\@cosupervisor\@empty\else
+            \IfLanguageName{dutch}{%
+              \textbf{Co-promotor:}}{%
+              \textbf{Co-Supervisor:}} & \@cosupervisor\\
+          \fi
+          \ifx\@institution\@empty\else
+            \IfLanguageName{dutch}{%
+              \textbf{Instelling:}}{\textbf{Institution:}} & \@institution\\
+          \fi
+        \end{tabular}
+        
+        \bigskip
+      
+        \begin{tabular}{ll}
+          \IfLanguageName{dutch}{%
             \textbf{Academiejaar:}}{\textbf{Academic year:}} & \@academicyear\\
-        \textbf{%
-        \ifcase\@examperiod
-        \or
-        \IfLanguageName{dutch}{Eerste}{First}
-        \or
-        \IfLanguageName{dutch}{Tweede}{Second}
-        \else
-        \IfLanguageName{dutch}{Derde}{Third}
-        \fi
-        \IfLanguageName{dutch}{examenperiode}{exam period} } & \\
-
-    \end{tabular}
-    \endgroup
-
-
-     %% Insert the HoGent logo
+            \textbf{%
+              \ifcase\@examperiod
+              \or
+                \IfLanguageName{dutch}{Eerste}{First}
+              \or
+                \IfLanguageName{dutch}{Tweede}{Second}
+              \else
+                \IfLanguageName{dutch}{Derde}{Third}
+              \fi
+          \IfLanguageName{dutch}{examenperiode}{exam period} } & \\
+        \end{tabular}
+      \endgroup
+    \else
+      \begin{tabular}{ll}
+        \IfLanguageName{dutch}{%
+          \textbf{Academiejaar:}}{\textbf{Academic year:}} & \@academicyear\\
+      \end{tabular}     
+    \fi
+    
+    %% Insert the HoGent logo
     \begin{tikzpicture}[remember picture, overlay]
-        \node [anchor=south east, shift={(-\the\wd\logopart, \the\wd\logopart)}, inner sep=0, outer sep=0] (logo) at (current page.south east)%
-        {%
-            \includegraphics[height=\the\ht\logopart]{hogent_logo}%
-        };%
+      \node [anchor=south east, shift={(-\the\wd\logopart, \the\wd\logopart)}, inner sep=0, outer sep=0] (logo) at (current page.south east)%
+      {%
+        \includegraphics[height=\the\ht\logopart]{hogent_logo}%
+      };%
     \end{tikzpicture}
-
+    
     \bigskip
     \begingroup
-        \subtitlefont\bfseries\@facultyname\@addpunct{.}
+      \subtitlefont\bfseries\@facultyname\@addpunct{.}
     \endgroup
-
+    
     \end{titlepage}%
-
+    
     \thispagestyle{empty}
     \null\clearpage\restoregeometry
-    }
+  }
 \fi
 
 %% Page style for title pages
@@ -492,14 +523,14 @@
     \fancyhf{}
     \renewcommand*\headrulewidth{0pt}
     \renewcommand*\footrulewidth{0pt}
-    \fancyfoot[C]{\titlefont\thepage}
+    \fancyfoot[C]{\thepage}
 }
 
 %% Fancy style for the main matter
 \fancypagestyle{mainmatter}{%
     \fancyhf{}
     %% Page numbers on the top left and top right
-    \fancyhead[LE,RO]{\titlefont\thepage}
+    \fancyhead[LE,RO]{\thepage}
     %% Chapter name on the left (even) page
     \fancyhead[RE]{\titlefont\bfseries\nouppercase{\leftmark}}
     %% Section name on the right (odd) page
@@ -577,7 +608,7 @@
 \titlespacing{\section}{0pt}{\baselineskip}{3pt}
 %% In the table of contents, section names are followed by a line of dots 8pt
 %% apart
-\dottedcontents{section}[3.8em]{\subtitlefont}{2.3em}{8pt}
+\dottedcontents{section}[3.8em]{\tocfont}{2.3em}{8pt}
 
 %% Subsection titles have the same layout as section titles, except in a smaller
 %% font
@@ -587,7 +618,7 @@
     {0pt}
     {\color{title}}
 \titlespacing{\subsection}{0pt}{\baselineskip}{1.5pt}
-\dottedcontents{subsection}[7em]{\subtitlefont}{3.2em}{8pt}
+\dottedcontents{subsection}[7em]{\tocfont}{3.2em}{8pt}
 
 %% Subsubsections have the same font and color as sections and subsections, but
 %% are not preceded by a number
