@@ -167,6 +167,7 @@
     \RequirePackage[backend=biber,style=apa]{biblatex}
     \DeclareLanguageMapping{english}{british-apa}
 \fi
+\RequirePackage{csquotes}
 
 \RequirePackage[small,bf,nooneline,footnotesize]{caption}
 \RequirePackage[flushmargin,hang]{footmisc}
